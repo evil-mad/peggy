@@ -1,0 +1,30 @@
+#######################################
+# Syntax Coloring Map For Peggy2
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+####################################### 
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+Peggy_Clear	KEYWORD2
+Peggy_HardwareInit	KEYWORD2
+Peggy_ClearPoint	KEYWORD2
+Peggy_SetPoint	KEYWORD2
+Peggy_RefreshAll	KEYWORD2
+Peggy_WritePoint	KEYWORD2
+Peggy_GetPoint	KEYWORD2 
+
+#######################################
+# Instances (KEYWORD2)
+#######################################
+
+Peggy2	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
