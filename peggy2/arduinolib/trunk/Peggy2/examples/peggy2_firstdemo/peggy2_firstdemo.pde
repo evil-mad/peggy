@@ -1,6 +1,10 @@
 /* Demo code for Peggy 2.0, using the Peggy2 library.
+NEEDS PEGGY2 LIBRARY VERSION: 0.2
+
 
 Demonstrate very simple "live" animation using independent frame buffers.
+
+
 
 
 Copyright (c) 2008 Windell H Oskay.  All right reserved.
@@ -38,7 +42,7 @@ unsigned char row, col;
 
 void setup()                    // run once, when the sketch starts
 {
-     firstframe.Peggy_HardwareInit();   // Call this once to init the hardware. 
+     firstframe.HardwareInit();   // Call this once to init the hardware. 
                                         // (Only needed once, even if you've got lots of frames.)
      
      
@@ -63,8 +67,21 @@ while (j < 25)
 */
 
 
-firstframe.Peggy_Clear(); // Erase the entire frame buffer-- undo writing any patterns.
-secondframe.Peggy_Clear(); // Erase the entire frame buffer-- undo writing any patterns.
+firstframe.Clear(); // Erase the entire frame buffer-- undo writing any patterns.
+secondframe.Clear(); // Erase the entire frame buffer-- undo writing any patterns.
+
+
+
+
+//  Draw dots at corners:
+    secondframe.SetPoint(0,0);
+    secondframe.SetPoint(24,0);
+    secondframe.SetPoint(0,24); 
+    secondframe.SetPoint(24,24); 
+    secondframe.SetPoint(23,24); 
+    
+     secondframe.ClearPoint(23,24);    // "oops bad point" -- erase it.
+  
 
 }
 
@@ -76,22 +93,12 @@ secondframe.Peggy_Clear(); // Erase the entire frame buffer-- undo writing any p
 
 void loop()                     // run over and over again
 { 
-  
-    
-firstframe.Peggy_RefreshAll(8); //Draw eight times
 
-  
-//  Draw dots at corners:
-    secondframe.Peggy_SetPoint(0,0);
-    secondframe.Peggy_SetPoint(24,0);
-    secondframe.Peggy_SetPoint(0,24); 
-    secondframe.Peggy_SetPoint(24,24); 
-    secondframe.Peggy_SetPoint(23,24); 
+secondframe.RefreshAll(1); // Draw once - corner dots  
     
-     secondframe.Peggy_ClearPoint(23,24);    // "oops bad point" -- erase it.
+firstframe.RefreshAll(4); //Draw FOUR TIMES-- brighter.
   
 
-secondframe.Peggy_RefreshAll(1); // Draw 8 times -- less intense signal for the corner dots   
 
 row = 0; 
 
@@ -105,7 +112,7 @@ n++;
 if (n > p)
 {
 n = 0;
-firstframe.Peggy_SetPoint(col,row);
+firstframe.SetPoint(col,row);
 } 
 
 m++;
@@ -119,8 +126,7 @@ if (m > 624){
    if (p > 75)
      p = 1;
    
-   
-   firstframe.Peggy_Clear(); // Erase the entire frame buffer
+   firstframe.Clear(); // Erase the entire frame buffer
 }
 
 
