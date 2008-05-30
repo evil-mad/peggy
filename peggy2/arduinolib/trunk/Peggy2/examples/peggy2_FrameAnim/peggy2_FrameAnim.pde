@@ -1,5 +1,4 @@
-/* Simple example code for Peggy 2.0, using the Peggy2 library.
-
+/* Simple example code for Peggy 2.0, using the Peggy2 library, version 0.2.
 Generate four (very simple) frame buffers and switch between them to animate.
 
 
@@ -30,15 +29,15 @@ Peggy2 frame4;     // Make a frame buffer object, called frame4
    
 void setup()                    // run once, when the sketch starts
 {
-     frame1.Peggy_HardwareInit();   // Call this once to init the hardware. 
+     frame1.HardwareInit();   // Call this once to init the hardware. 
                                         // (Only needed once, even if you've got lots of frames.)
      
    
    
-   frame1.Peggy_Clear();
-   frame2.Peggy_Clear();
-   frame3.Peggy_Clear();
-   frame4.Peggy_Clear();
+   frame1.Clear();
+   frame2.Clear();
+   frame3.Clear();
+   frame4.Clear();
    
 // Manually write sample patterns to buffers:
 
@@ -52,13 +51,13 @@ while (y < 25) {
   
     
 if (x < 8)    
-  frame1.Peggy_SetPoint(x, y);
+  frame1.SetPoint(x, y);
 else if (x < 15)  
-    frame2.Peggy_SetPoint(x, y);
+    frame2.SetPoint(x, y);
 else if (x < 20)  
-    frame3.Peggy_SetPoint(x, y);
+    frame3.SetPoint(x, y);
  else  
-    frame4.Peggy_SetPoint(x, y);   
+    frame4.SetPoint(x, y);   
   x++;
   }
  y++;
@@ -78,8 +77,8 @@ void loop()                     // run over and over again
   
   
     
-frame1.Peggy_RefreshAll(500); //Draw frame buffer 1
-frame2.Peggy_RefreshAll(500); //Draw frame buffer 2
-frame3.Peggy_RefreshAll(500); //Draw frame buffer 3
-frame4.Peggy_RefreshAll(500); //Draw frame buffer 4
+frame1.RefreshAll(500); //Draw frame buffer one time
+frame2.RefreshAll(500); //Draw frame buffer one time
+frame3.RefreshAll(500); //Draw frame buffer one time
+frame4.RefreshAll(500); //Draw frame buffer one time
 }

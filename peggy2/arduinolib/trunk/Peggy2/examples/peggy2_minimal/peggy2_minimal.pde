@@ -28,7 +28,7 @@ Peggy2 firstframe;     // Make a first frame buffer object, called firstframe
    
 void setup()                    // run once, when the sketch starts
 {
-     firstframe.Peggy_HardwareInit();   // Call this once to init the hardware. 
+     firstframe.HardwareInit();   // Call this once to init the hardware. 
                                         // (Only needed once, even if you've got lots of frames.)
      
      
@@ -42,7 +42,7 @@ while (y < 25) {
   x = 0;
   while (x < 25) {
   
-  firstframe.Peggy_SetPoint(x, y);
+  firstframe.SetPoint(x, y);
 
   x++;
   }
@@ -60,6 +60,6 @@ while (y < 25) {
 void loop()                     // run over and over again
 { 
     
-firstframe.Peggy_RefreshAll(1); //Draw frame buffer one time
+firstframe.RefreshAll(1); //Draw frame buffer one time
 
 }
