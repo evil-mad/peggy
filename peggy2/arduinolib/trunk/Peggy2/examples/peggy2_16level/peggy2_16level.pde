@@ -29,7 +29,7 @@ Peggy2 frame3;     // Make a frame buffer object, called frame3
 Peggy2 frame4;     // Make a frame buffer object, called frame4 
 
 unsigned short color = 0; 
-unsigned short repNumber = 12;  Change scrolling raet
+unsigned short repNumber = 12; // Change scrolling rate
 
 
 void setup()                    // run once, when the sketch starts
