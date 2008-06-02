@@ -1,7 +1,7 @@
 /* Simple example code for Peggy 2.0, using the Peggy2 library.
 
 Initialize a single frame buffer array, fill it with dots, and display it.
-
+ --  much like the default Peggy code.
 
 
 Copyright (c) 2008 Windell H Oskay.  All right reserved.
