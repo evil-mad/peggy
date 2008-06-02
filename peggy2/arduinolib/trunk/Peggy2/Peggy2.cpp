@@ -69,13 +69,76 @@ void Peggy2::HardwareInit()
   SPI_TX(0);
   SPI_TX(0);
 
-  PORTB |= _BV(1);    //Latch Pulse 
-  PORTB &= ~( _BV(1));  
+  PORTB |= 2;    //Latch Pulse 
+  PORTB &= 253;  
+}
+
+
+void delay()
+{
+unsigned int delayvar;
+	delayvar = 0; 
+	while (delayvar <=  6000U)		
+		{ 
+			asm("nop");  
+			delayvar++;
+		}
+}
+
+
+void Peggy2::RefreshAll(unsigned int refreshNum)
+{
+  unsigned int i,k;
+  unsigned char j;
+  
+  union mix_t {
+    unsigned long atemp; 
+    unsigned char c[4];
+  } mix;
+  
+  
+  k = 0;
+  
+  while (k != refreshNum)   
+  {
+    k++;
+    j = 0;
+    while (j < 25) 
+    {
+      if (j == 0)
+        PORTD = 160;
+      else if (j < 16)
+        PORTD = j;
+      else
+        PORTD = (j - 15) << 4;  
+      
+	  i = 0;
+	  while (i < 50)
+	  {
+	  asm("nop"); 
+	  i++;
+	  }
+	  
+  	  mix.atemp = buffer[j];
+	  
+      SPI_TX(mix.c[3]);
+      SPI_TX(mix.c[2]);
+      SPI_TX(mix.c[1]);
+	  
+      PORTD = 0;  // Turn displays off
+ 
+      SPI_TX(mix.c[0]); 
+      PORTB |= 2U;    //Latch Pulse 
+      PORTB &= 253U;
+      
+      j++;
+    }
+  }
 }
 
 
 
-void Peggy2::RefreshAll(unsigned int refreshNum)
+void Peggy2::RefreshAllFast(unsigned int refreshNum)
 {
   unsigned int k;
   unsigned char j;
@@ -101,7 +164,8 @@ void Peggy2::RefreshAll(unsigned int refreshNum)
       else
         PORTD = (j - 15) << 4;  
       
-	mix.atemp = buffer[j];
+	  
+  	  mix.atemp = buffer[j];
 	  
       SPI_TX(mix.c[3]);
       SPI_TX(mix.c[2]);
@@ -110,8 +174,8 @@ void Peggy2::RefreshAll(unsigned int refreshNum)
       PORTD = 0;  // Turn displays off
  
       SPI_TX(mix.c[0]); 
-      PORTB |= _BV(1);    //Latch Pulse 
-      PORTB &= ~( _BV(1));
+      PORTB |= 2U;    //Latch Pulse 
+      PORTB &= 253U;
       
       j++;
     }
@@ -119,10 +183,14 @@ void Peggy2::RefreshAll(unsigned int refreshNum)
 }
 
 
+
+
+
 void Peggy2::Clear() 
 {
   memset(buffer, 0, 25*sizeof(uint32_t));
 }
+
 
 void Peggy2::WritePoint(uint8_t xPos, uint8_t yPos, uint8_t Value)
 {
@@ -155,7 +223,6 @@ void Peggy2::SetPoint(uint8_t xPos, uint8_t yPos)
 void Peggy2::ClearPoint(uint8_t xPos, uint8_t yPos)
 {
   buffer[yPos] &= ~((uint32_t) 1 << xPos);
-
 }
 
 

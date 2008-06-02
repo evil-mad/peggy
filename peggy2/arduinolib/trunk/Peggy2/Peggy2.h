@@ -42,9 +42,16 @@ class Peggy2
     // Onetime hardware initialization, don't need to run it for every frame.
     void HardwareInit();
 
-    // Refresh this frame, refreshNum is the number of times this frame
-    // will be refreshed in this call.
+    // Refresh this frame, refreshNum is how long to wait on each line; normally 
+	// use a refresh value of 1-10.
     void RefreshAll(unsigned int refreshNum);
+	
+	
+	// Refresh this frame, refreshNum is the number of times this frame
+    // will be refreshed in this call.
+	// Uses a fast scan rate, but may possibly cause ghosting or other unforseen effects.
+    void RefreshAllFast(unsigned int refreshNum);
+	
 
     // Clears out the FrameBuffer (all LEDs set to OFF)
     void Clear(void);

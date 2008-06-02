@@ -79,7 +79,8 @@ void loop()                     // run over and over again
   
     
 frame1.RefreshAll(1); //Draw frame buffer one time
-frame2.RefreshAll(2); //Draw frame buffer one time
-frame3.RefreshAll(4); //Draw frame buffer one time
-frame4.RefreshAll(8); //Draw frame buffer one time
+frame2.RefreshAll(2); //Draw frame buffer 2 times
+frame3.RefreshAll(4); //Draw frame buffer 4 times
+frame4.RefreshAll(8); //Draw frame buffer 8 times
+ 
 }
