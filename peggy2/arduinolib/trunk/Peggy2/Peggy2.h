@@ -1,6 +1,6 @@
 /*
   Peggy2.h - Peggy 2.0 LED Matrix library for Arduino
-  LIBRARY VERSION: 0.2b, DATED 5/30/2008
+  LIBRARY VERSION: 0.21b, DATED 6/02/2008
   
   
   
