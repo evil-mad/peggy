@@ -1,6 +1,6 @@
 /*
   Peggy2.h - Peggy 2.0 LED Matrix library for Arduino
-  LIBRARY VERSION: 0.21b, DATED 6/02/2008
+  LIBRARY VERSION: 0.30b, DATED 7/08/2008
   
   
   
@@ -21,6 +21,12 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
   Modifications by Michael Yin, Copyright (c) 2008. All rights reserved.
+  
+  Line drawing code by Michaël Zancan & Julien 'v3ga' Gachadoat, Websites:
+	http://www.2roqs.com
+	http://www.zancan.fr
+	http://www.v3ga.net
+
 */
 
 
@@ -83,13 +89,24 @@ class Peggy2
     // Turn a pixel off
     void ClearPoint(uint8_t xPos, uint8_t yPos);
 
-    //void RefreshNextRow(unsigned int refreshNum); // Not yet written. ;)
-    //uint8_t GetPoint(uint8_t xPos, uint8_t yPos); // Not yet written. ;)
+	// Determine if a pixel is on or off
+	uint8_t GetPoint(uint8_t xPos, uint8_t yPos); 
+		
+	//Draw a line from (x1,y1) to (x2,y2)
+	void Line(int8_t x1, int8_t y1, int8_t x2, int8_t y2);
+
+	//Set current cursor position to (xPos,yPos)
+	void MoveTo(int8_t xPos, int8_t yPos);
+	
+	//Draw a line from current cursor position to (xPos,yPos)
+	void LineTo(int8_t xPos, int8_t yPos);
+	 
     
     uint32_t* buffer;
   private:
-    void SPI_TX(char);  
-    uint8_t _RowNum;
+    void SPI_TX(char);   
+    uint8_t _Xcursor;
+	uint8_t _Ycursor;
 };
 
 

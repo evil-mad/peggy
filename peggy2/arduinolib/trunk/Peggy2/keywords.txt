@@ -20,6 +20,9 @@ WritePoint	KEYWORD2
 GetPoint	KEYWORD2 
 WriteRow 	KEYWORD2
 SetRow 		KEYWORD2
+Line		KEYWORD2
+MoveTo		KEYWORD2
+LineTo		KEYWORD2
 
 #######################################
 # Instances (KEYWORD2)

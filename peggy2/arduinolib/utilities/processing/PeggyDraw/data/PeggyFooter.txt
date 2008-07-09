@@ -1,0 +1,32 @@
+};
+ 
+
+
+void setup()                    // run once, when the sketch starts
+{
+  frame1.HardwareInit();   // Call this once to init the hardware. 
+  // (Only needed once, even if you've got lots of frames.)
+
+  unsigned short y = 0;     
+  
+  while (y < 25) {
+
+
+    frame1.WriteRow( y, pgm_read_dword(&data1[y]));  
+
+    y++;
+
+  }
+
+
+
+
+}  // End void setup()  
+
+
+void loop()                     // run over and over again
+{ 
+
+  frame1.RefreshAll(10); //Draw frame buffer 10 times 
+
+}
