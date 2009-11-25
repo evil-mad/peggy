@@ -1,0 +1,37 @@
+#######################################
+# Syntax Coloring Map For Peggy2Serial
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+####################################### 
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+Clear		KEYWORD2
+HardwareInit	KEYWORD2
+ClearPoint	KEYWORD2
+SetPoint	KEYWORD2
+RefreshAll	KEYWORD2
+RefreshAllFast	KEYWORD2
+WritePoint	KEYWORD2
+GetPoint	KEYWORD2 
+WriteRow 	KEYWORD2
+SetRow 		KEYWORD2
+Line		KEYWORD2
+MoveTo		KEYWORD2
+LineTo		KEYWORD2
+
+#######################################
+# Instances (KEYWORD2)
+#######################################
+
+Peggy2		KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+PEGGY_ROW_ON 	LITERAL1
+PEGGY_ROW_OFF 	LITERAL1
