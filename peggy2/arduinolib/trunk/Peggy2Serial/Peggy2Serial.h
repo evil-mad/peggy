@@ -59,7 +59,11 @@ class Peggy2
 	// Uses a fast scan rate, but may possibly cause ghosting or other unforseen effects.
     void RefreshAllFast(unsigned int refreshNum);
 	
-
+	// Refresh this frame, refreshNum is the number of times this frame
+    // will be refreshed in this call.
+	// Uses a slower, "ghostbusting" scan rate, for improved uniformity.
+    void RefreshAllSlow(unsigned int refreshNum);
+	 
     // Clears out the FrameBuffer (all LEDs set to OFF)
     void Clear(void);
 
