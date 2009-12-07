@@ -16,6 +16,7 @@ ClearPoint	KEYWORD2
 SetPoint	KEYWORD2
 RefreshAll	KEYWORD2
 RefreshAllFast	KEYWORD2
+RefreshAllSlow	KEYWORD2
 WritePoint	KEYWORD2
 GetPoint	KEYWORD2 
 WriteRow 	KEYWORD2

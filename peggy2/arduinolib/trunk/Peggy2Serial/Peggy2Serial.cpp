@@ -1,6 +1,6 @@
 /*
   Peggy2Serial.cpp - Peggy 2.0 LED Matrix library for Arduino
-  LIBRARY VERSION: 0.40b, DATED 11/25/2009
+  LIBRARY VERSION: 0.41, DATED 12/6/2009
 
   
   
@@ -60,10 +60,8 @@ void Peggy2Serial::HardwareInit()
   DDRD = 254U;
 	
   PORTC = 15U;  //Take C4 and C5 low, rest high
-	DDRC = 48;  // C4 and C5 are outputs 	
-   
-	
-	
+  DDRC = 48;  // C4 and C5 are outputs 	
+    
   ////SET MOSI, SCK Output, all other SPI as input: 
   DDRB |= _BV(5) | _BV(3) | _BV(2) | _BV(1);
 	 
@@ -98,53 +96,76 @@ void Peggy2Serial::RefreshAll(unsigned int refreshNum)
 {
   unsigned int i,k;
   unsigned char j;
-  unsigned char pd;
+	unsigned char pc, pd;//, pc2, pd2;
 	
   union mix_t {
     unsigned long atemp; 
     unsigned char c[4];
   } mix;
   
-  
+	//Turn off display:
+	SPI_TX(0); 
+	SPI_TX(0); 
+	SPI_TX(0); 
+	SPI_TX(0); 
+	
+	PORTB |= 2U;    //Latch Pulse 
+	PORTB &= 253U;
+	
   k = 0;
   
   while (k != refreshNum)   
   {
     k++;
-    j = 0;
-    while (j < 25) 
-    {
-      if (j == 0)
-        pd = 160;
-      else if (j < 16)
-        pd = j;
-      else
-        pd = (j - 15) << 4;  
-      
-	
+    j = 1;
+    while (j < 26) 
+    { 
+		if (j < 16){
+			pd = j;
+			pc = ((pd & 3) << 4) | PORTC;
+			pd = pd & 252; 
+		}
+		else{
+			pd = (j - 15) << 4;  
+			pc  = PORTC; 
+		}
+		 
+		mix.atemp = buffer[j - 1];
 		
-		PORTD = pd & 252;
-		PORTC = (pd & 3) << 4; 
+		SPI_TX(mix.c[3]);
+		SPI_TX(mix.c[2]);
+		SPI_TX(mix.c[1]);
+		SPI_TX(mix.c[0]); 
 		
+		PORTD = pd;		// Turn row on before turning on columns.
+		PORTC = pc;		// (Continued...)
+		
+		PORTB |= 2U;    //Latch Pulse turns on columns
+		PORTB &= 253U;	// End latch pulse
+		 
 	  i = 0;
-	  while (i < 50)
+	  while (i < 50)  // was 50
 	  {
 	  asm("nop"); 
 	  i++;
 	  }
 	  
-  	  mix.atemp = buffer[j];
-	  
-      SPI_TX(mix.c[3]);
-      SPI_TX(mix.c[2]);
-      SPI_TX(mix.c[1]);
-	  
-      PORTD = 0;  // Turn displays off
- 
-      SPI_TX(mix.c[0]); 
-      PORTB |= 2U;    //Latch Pulse 
-      PORTB &= 253U;
-      
+	  	//Turn off display:
+		SPI_TX(0); 
+		SPI_TX(0); 
+		SPI_TX(0); 
+		SPI_TX(0); 
+		
+		pc = PORTC & 15;	
+
+		
+		PORTB |= 2U;    //Latch Pulse turns off columns
+		PORTB &= 253U;  // End latch pulse
+	
+		PORTC = pc;
+        PORTD = 0;  // Turn row off once columns are off.
+
+		  
       j++;
     }
   }
@@ -152,52 +173,162 @@ void Peggy2Serial::RefreshAll(unsigned int refreshNum)
 
 
 
+void Peggy2Serial::RefreshAllSlow(unsigned int refreshNum)
+{
+	// Slow, for ghost prevention.
+	// Redraw is at about 150 Hz, instead of about 1.5 kHz.
+	// Bonus: Slightly brihter than regular redraw.
+	unsigned int i,k;
+	unsigned char j;
+	unsigned char pc, pd;
+	
+	union mix_t {
+		unsigned long atemp; 
+		unsigned char c[4];
+	} mix;
+	
+	//Turn off display:
+	SPI_TX(0); 
+	SPI_TX(0); 
+	SPI_TX(0); 
+	SPI_TX(0); 
+	
+	PORTB |= 2U;    //Latch Pulse 
+	PORTB &= 253U;
+	
+	k = 0;
+	
+	while (k != refreshNum)   
+	{
+		k++;
+		j = 1;
+		while (j < 26) 
+		{ 
+			if (j < 16){
+				pd = j;
+				pc = ((pd & 3) << 4) | PORTC;
+				pd = pd & 252; 
+			}
+			else{
+				pd = (j - 15) << 4;  
+				pc  = PORTC; 
+			}
+			
+			mix.atemp = buffer[j - 1];
+			
+			SPI_TX(mix.c[3]);
+			SPI_TX(mix.c[2]);
+			SPI_TX(mix.c[1]);
+			SPI_TX(mix.c[0]); 
+			  
+			
+			PORTD = pd;		// Turn row on before turning on columns.
+			PORTC = pc;		// (Continued...)
+			
+			PORTB |= 2U;    //Latch Pulse turns on columns
+			PORTB &= 253U;	// End latch pulse
+			
+			
+			i = 0;
+			while (i < 500)  // Wait 10 times as long
+			{
+				asm("nop"); 
+				i++;
+			}
+			
+			//Turn off display:
+			SPI_TX(0); 
+			SPI_TX(0); 
+			SPI_TX(0); 
+			SPI_TX(0); 
+			
+			pc = PORTC & 15;	 
+			
+			PORTB |= 2U;    //Latch Pulse turns off columns
+			PORTB &= 253U;  // End latch pulse
+			  
+			PORTC = pc;
+			PORTD = 0;  // Turn row off once columns are off.
+		 
+			j++;
+		}
+	}
+}
+
+
 void Peggy2Serial::RefreshAllFast(unsigned int refreshNum)
 {
-  unsigned int k;
-  unsigned char j, pd;
-  
-  union mix_t {
-    unsigned long atemp; 
-    unsigned char c[4];
-  } mix;
-  
-  
-  k = 0;
-  
-  while (k != refreshNum)   
-  {
-    k++;
-    j = 0;
-    while (j < 25) 
-    {
-      if (j == 0)
-        pd = 160;
-      else if (j < 16)
-        pd = j;
-      else
-        pd = (j - 15) << 4;  
-  
-		
-		
-		PORTD = pd & 252;
-		PORTC = (pd & 3) << 4; 
-	  
-  	  mix.atemp = buffer[j];
-	  
-      SPI_TX(mix.c[3]);
-      SPI_TX(mix.c[2]);
-      SPI_TX(mix.c[1]);
-	  
-      PORTD = 0;  // Turn displays off
- 
-      SPI_TX(mix.c[0]); 
-      PORTB |= 2U;    //Latch Pulse 
-      PORTB &= 253U;
-      
-      j++;
-    }
-  }
+	unsigned int i,k;
+	unsigned char j;
+	unsigned char pc, pd, pc2, pd2;
+	
+	union mix_t {
+		unsigned long atemp; 
+		unsigned char c[4];
+	} mix;
+	
+	//Turn off display:
+	SPI_TX(0); 
+	SPI_TX(0); 
+	SPI_TX(0); 
+	SPI_TX(0); 
+	
+	PORTB |= 2U;    //Latch Pulse 
+	PORTB &= 253U;
+	
+	k = 0;
+	
+	while (k != refreshNum)   
+	{
+		k++;
+		j = 0;
+		while (j < 25) 
+		{
+			
+			
+			if (j < 16)
+				pd = j;
+			else
+				pd = (j - 15) << 4;  
+			//PORTD = pd & 252;
+			//PORTC = (pd & 3) << 4; 
+			
+			pd2 = pd & 252;
+			pd = (pd & 3);
+			pd = (pd << 4);
+			
+			PORTD = pd2;
+			PORTC = pd;		
+			
+			
+			mix.atemp = buffer[j];
+			
+			SPI_TX(mix.c[3]);
+			SPI_TX(mix.c[2]);
+			SPI_TX(mix.c[1]);
+			SPI_TX(mix.c[0]); 
+			PORTB |= 2U;    //Latch Pulse 
+			PORTB &= 253U;	
+			 
+			
+			//Turn off display:
+			SPI_TX(0); 
+			SPI_TX(0); 
+			SPI_TX(0); 
+			SPI_TX(0); 
+			
+			PORTB |= 2U;    //Latch Pulse 
+			PORTB &= 253U;
+			
+			//PORTC &= 15;
+			pc = PORTC & 15;	
+			PORTC = pc;
+			PORTD = 0;  // Turn displays off
+			
+			
+			j++;
+		}
+	}
 }
 
 void Peggy2Serial::Clear() 
