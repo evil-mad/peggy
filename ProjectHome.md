@@ -1,0 +1,1 @@
+The Peggy is an open-source LED display project designed by Evil Mad Scientist Laboratories.  [Peggy 2.0](http://www.evilmadscientist.com/article.php/peggy2) is based on an ATmega168 or ATmega328P microcontroller and can be programmed through the Arduino programming environment.
