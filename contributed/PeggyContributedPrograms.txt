@@ -1,0 +1,43 @@
+LIST OF CONTRIBUTED PEGGY 2 PROGRAMS
+
+PeggyDraw2, v1.1.zip
+PeggyDraw2, v 1.1
+A Processing (processing.org) application to make simple 1-bit animations on the Peggy.  Saves ready-to-use Peggy programs (Arduino .pde format).  No programming required.    
+Details at http://www.evilmadscientist.com/article.php/peggydraw2
+
+
+peggy2_qix.pde.zip  
+Peggy 2 Example code - Qix
+
+
+PeggyWriter_0.1.zip 
+Create static or animated text on the Peggy. Comes with predefined character set.
+
+Peggy2_Starfield.zip
+Peggy2 Starfield 3D / 32 Grey
+
+
+PegEdit_v0.2.zip  
+PegEdit 0.2: (Windows) Design Peggy2 images: A Windows application for drawing 25x25 greyscale Peggy2 images w/ source (C#, VS2008)
+
+Peggy_Tetris22.zip	
+Peggy "tetris" by Steen Andersson
+
+peggy2_SlideShow2.pde	
+Configurable Slide Show Sketch - Includes Mooninite 1-31-07 Memorial Slides (V2 bug fix)
+
+
+Peggy2Frame_v1.1.zip	
+Peggy2Frame 1.1: Supports 16 shades for easy drawing of points, lines and images w/ examples.
+
+Peggy2Frame_v1.0.zip	
+Peggy2Frame: Class supporting 16 greys for easy drawing of points, lines and images w/ examples.
+
+bmp2peg_1.1.zip	
+Converts a bitmap file to a Peggy2 program (updated for Mac & Linux)  
+
+peggy_picture.zip
+Display a picture on a Peggy 2.0 
+
+peggy_clock.zip
+Display an analog clock on the Peggy 2.0
