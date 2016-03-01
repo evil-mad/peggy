@@ -1,0 +1,57 @@
+
+void setup()                    // run once, when the sketch starts
+{
+
+//  Serial.begin(9600);    // For Optional time reporting
+
+  frame.HardwareInit();   // Call this once to init the hardware. 
+  // (Only needed once, even if you've got lots of frames.)
+
+  timeLast = 0;
+  frameNumber = -1;
+  ai = 0;
+  frameDuration = 0;
+}
+  
+void loop()                     // run over and over again
+{  
+
+  if (( millis() -  timeLast) > frameDuration)
+  {
+    timeLast = timeLast + frameDuration ;
+    frameNumber++;    // Go to next frame 
+
+    if (frameNumber == frames)
+    {
+      frameNumber = 0;
+      ai = 0;
+    }
+    frameDuration =  pgm_read_word(&timestore[frameNumber]); // Find new duration
+
+    uint8_t y = 0;
+
+    while (y < 25) {
+      frame.WriteRow( y,  pgm_read_dword(&datastore[ai]));     
+      y++;
+      ai++;
+    }
+
+  }
+
+
+//  unsigned long timetemp = millis();  // Optional time reporting
+
+  frame.RefreshAll(12 + refreshSalt[salt]); //Draw frame buffer n times
+
+//  Serial.println(millis() - timetemp); // Optional time reporting
+
+  salt++;
+  if (salt > 5)
+    salt = 0; 
+
+  //  Typical refresh timing:  100 cycles: 84 ms  
+  //  Typical refresh timing:  23 cycles: 19-21 ms    
+  //  Typical refresh timing:  20 cycles: 16-18 ms    
+  //  Typical refresh timing:  12 cycles: 10 ms  
+
+}
